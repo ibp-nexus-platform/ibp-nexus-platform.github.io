@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Nexus Platform</title>
 <meta name="description" content="NEXUS — one data spine from 3D coordination to 4D planning, 5D cost and 6D digital twin">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -769,7 +771,83 @@ select.inp { padding-right: 4px; }
 .prop-card { border: 1px solid var(--line); border-left: 4px solid #f08c00; border-radius: 5px; padding: 6px; display: flex; flex-direction: column; gap: 4px; background: var(--panel); } .prop-card.dir { border-left-color: #e03131; }
 .prop-card img { width: 100%; border-radius: 3px; cursor: pointer; display: block; } .prop-card .row { gap: 6px; align-items: center; } .prop-card .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; } .prop-card .grow { flex: 1; }
 .mk-bar .inp { width: auto; height: 26px; padding: 0 6px; } .mk-bar .small { white-space: nowrap; }
+/* v2.1 — direct manipulation of site items, library, proposals */
+.item-hud { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 28; display: flex; align-items: center; gap: 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 4px 6px 4px 10px; box-shadow: 0 3px 12px rgba(0,0,0,.25); max-width: calc(100% - 80px); flex-wrap: wrap; }
+.item-hud .nm { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; }
+.item-hud small { font-size: 11px; margin-right: 4px; }
+.item-hud .x { border: 0; background: none; font-size: 18px; cursor: pointer; color: var(--mut); padding: 0 4px; }
+.site-lib { border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; margin-bottom: 6px; background: var(--bg2, rgba(0,0,0,.02)); }
+.site-lib .seg { display: flex; flex-wrap: wrap; gap: 2px; margin: 4px 0; }
+.site-lib .seg button { border: 1px solid var(--line); background: var(--panel); border-radius: 4px; font-size: 11.5px; padding: 2px 6px; cursor: pointer; color: inherit; }
+.site-lib .seg button.on { background: var(--acc); color: #fff; border-color: var(--acc); }
+.kpal.lib { grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); max-height: 190px; overflow: auto; }
+.kpal.lib button { cursor: grab; }
+.kpal.lib button:active { cursor: grabbing; }
+.send-diff { border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; margin-bottom: 10px; max-height: 220px; overflow: auto; }
+.diff-l { margin: 4px 0; padding-left: 16px; font-family: ui-monospace, monospace; font-size: 11.5px; }
+.diff-l li.add { color: #2f9a4c; } .diff-l li.rem { color: #e03131; }
+.fleet-b { border: 1px dashed var(--line); border-radius: 6px; padding: 6px 8px; margin: 6px 0; }
+.small.pre { white-space: pre-wrap; }
+.prop-card .confirm { background: rgba(240,140,0,.1); border-radius: 4px; padding: 3px 6px; }
+/* v2.1 — dock any window on any edge of the workspace */
+.work-host { position: absolute; inset: 0; }
+.work-in { position: absolute; top: var(--dt, 0px); right: var(--dr, 0px); bottom: var(--db, 0px); left: var(--dl, 0px); }
+.edock { position: absolute; display: none; z-index: 20; background: var(--panel); }
+.edock.on { display: block; }
+.edock.left { left: 0; top: 0; bottom: 0; width: var(--dl); border-right: 1px solid var(--line); }
+.edock.right { right: 0; top: 0; bottom: 0; width: var(--dr); border-left: 1px solid var(--line); }
+.edock.top { top: 0; left: var(--dl); right: var(--dr); height: var(--dt); border-bottom: 1px solid var(--line); }
+.edock.bottom { bottom: 0; left: var(--dl); right: var(--dr); height: var(--db); border-top: 1px solid var(--line); }
+.edock-in { position: absolute; inset: 0; display: flex; gap: 0; }
+.edock.left .edock-in, .edock.right .edock-in { flex-direction: column; }
+.edock.top .edock-in, .edock.bottom .edock-in { flex-direction: row; }
+.ewin { flex: 1 1 0; min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.edock.left .ewin + .ewin, .edock.right .ewin + .ewin { border-top: 2px solid var(--line); }
+.edock.top .ewin + .ewin, .edock.bottom .ewin + .ewin { border-left: 2px solid var(--line); }
+.pwin-h.ew { height: 28px; cursor: grab; }
+.pwin-h .eb, .wm-a .eb, .pane-ctl .eb { font-size: 13px; line-height: 1; width: 22px; }
+.pwin-h .eb.on, .wm-a .eb.on { color: var(--acc); background: var(--acc-tint, rgba(0,0,0,.06)); }
+.pwin-h .drag-tip { font-size: 10.5px; white-space: nowrap; }
+.edock-split { position: absolute; z-index: 6; background: transparent; }
+.edock-split:hover, .edock-split.drag { background: var(--acc); opacity: .5; }
+.edock.left .edock-split { right: -3px; top: 0; bottom: 0; width: 6px; cursor: ew-resize; }
+.edock.right .edock-split { left: -3px; top: 0; bottom: 0; width: 6px; cursor: ew-resize; }
+.edock.top .edock-split { bottom: -3px; left: 0; right: 0; height: 6px; cursor: ns-resize; }
+.edock.bottom .edock-split { top: -3px; left: 0; right: 0; height: 6px; cursor: ns-resize; }
+.pane-ctl .grip { cursor: grab; color: var(--acc); }
+.dock-guides { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }
+.dock-guides .dg { position: fixed; width: 40px; height: 40px; border-radius: 8px; background: color-mix(in srgb, var(--panel) 92%, transparent); border: 1px solid var(--acc); color: var(--acc); display: grid; place-items: center; font-size: 22px; box-shadow: 0 3px 10px rgba(0,0,0,.3); z-index: 2; }
+.dock-guides .dg.on { background: var(--acc); color: #fff; }
+.dock-guides .dg-cross { position: fixed; width: 140px; height: 140px; border-radius: 50%; background: rgba(0,0,0,.12); }
+.dock-prev { position: fixed; z-index: 9990; pointer-events: none; display: none; background: color-mix(in srgb, var(--acc) 22%, transparent); border: 2px solid var(--acc); border-radius: 6px; color: var(--acc); font-weight: 600; font-size: 13px; place-items: center; }
+.dock-prev.on { display: grid; }
+.dock-ghost { position: fixed; z-index: 9995; pointer-events: none; border: 2px dashed var(--acc); background: color-mix(in srgb, var(--panel) 70%, transparent); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; font-weight: 600; color: var(--ink); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+@media (max-width: 900px) { .work-host, .work-in { position: static; } .edock.on { position: static; width: auto !important; height: 55vh; } }
+/* v2.1 — theme menu */
+.thm-pop { width: min(380px, calc(100vw - 24px)); }
+.thm-seg { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 4px 6px; }
+.thm-seg button { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink); border-radius: 6px; padding: 5px 9px; font-size: 12px; cursor: pointer; }
+.thm-seg button.on { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); }
+.thm-sw { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 0 4px 6px; }
+.thm-sw button { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 6px; padding: 5px 8px; font-size: 12px; cursor: pointer; text-align: left; }
+.thm-sw button.on { border-color: var(--acc); box-shadow: inset 0 0 0 1px var(--acc); }
+.thm-sw i { width: 16px; height: 16px; border-radius: 50%; flex: 0 0 auto; }
+.thm-hc { display: flex; gap: 6px; align-items: center; font-size: 12px; padding: 4px; color: var(--ink); }
+:root.hc { --line: #8f9a94; --line-2: #6f7a74; --mut: #3d4a43; --dim: #56635c; }
+:root.hc[data-theme="dark"] { --line: #5d6c64; --line-2: #7a8a81; --mut: #c3d0c9; --dim: #a3b1a9; }
+@media (prefers-color-scheme: dark) { :root.hc:not([data-theme="light"]) { --line: #5d6c64; --line-2: #7a8a81; --mut: #c3d0c9; --dim: #a3b1a9; } }
+@media (max-width: 1100px) { .wm-btn span { display: none; } }
+/* v2.2 — native containers */
+.native-row td:first-child b::before { content: 'NATIVE'; font: 700 9px var(--f-cond); letter-spacing: .06em; color: var(--acc-ink); background: var(--acc); border-radius: 3px; padding: 1px 4px; margin-right: 6px; vertical-align: 1px; }
+.nat-d { display: grid; grid-template-columns: 200px 1fr; gap: 14px; align-items: start; }
+.nat-pv img { width: 200px; height: auto; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+.nat-pv .thumb-empty { width: 200px; height: 150px; display: grid; place-items: center; align-content: center; gap: 6px; border: 1px dashed var(--line); border-radius: 6px; color: var(--mut); }
+.tbl .brk { word-break: break-all; }
+.guide { padding-left: 20px; display: grid; gap: 8px; } .guide li b { display: block; } .guide li span { font-size: 12.5px; color: var(--ink); }
+@media (max-width: 700px) { .nat-d { grid-template-columns: 1fr; } }
 </style>
+</head><body>
 <div id="nexus"></div>
 <noscript>Nexus needs JavaScript.</noscript>
-<script src="nexus-app.js?v=mwdasrud"></script>
+<script src="nexus-app.js?v=mwddju6h"></script>
+</body></html>
