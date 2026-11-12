@@ -4315,14 +4315,14 @@ function W2e(bytes) {
     const text = decodeRevitFileInfo(basicFileInfo);
     const field = pattern => pattern.exec(text)?.[1]?.trim() || "";
     info.version = readRevitVersion(text);
-    info.build = field(/Build\s*:\s*([^\r\n\x00-\x1f]+)/i);
-    info.worksharing = field(/Worksharing\s*:\s*([^\r\n\x00-\x1f]+)/i);
-    info.central = field(/Central Model Path\s*:\s*([^\r\n\x00-\x1f]+)/i);
-    info.lastSave = field(/Last Save Path\s*:\s*([^\r\n\x00-\x1f]+)/i);
-    info.username = field(/Username\s*:\s*([^\r\n\x00-\x1f]+)/i);
-    info.locale = field(/Locale when saved\s*:\s*([^\r\n\x00-\x1f]+)/i);
-    info.guid = field(/Unique Document GUID\s*:\s*([\da-f-]{36})/i);
-    info.cloud = /IsSingleUserCloudModel\s*:\s*T/i.test(text) || /cloud:/i.test(info.central);
+    info.build = field(/Build[ \t]*:[ \t]*([^\r\n\x00-\x1f]+)/i);
+    info.worksharing = field(/Worksharing[ \t]*:[ \t]*([^\r\n\x00-\x1f]+)/i);
+    info.central = field(/Central Model Path[ \t]*:[ \t]*([^\r\n\x00-\x1f]+)/i);
+    info.lastSave = field(/Last Save Path[ \t]*:[ \t]*([^\r\n\x00-\x1f]+)/i);
+    info.username = field(/Username[ \t]*:[ \t]*([^\r\n\x00-\x1f]+)/i);
+    info.locale = field(/Locale when saved[ \t]*:[ \t]*([^\r\n\x00-\x1f]+)/i);
+    info.guid = field(/Unique Document GUID[ \t]*:[ \t]*([\da-f-]{36})/i);
+    info.cloud = /IsSingleUserCloudModel[ \t]*:[ \t]*T/i.test(text) || /cloud:/i.test(info.central);
   }
 
   const partAtom = readStream("PartAtom");
